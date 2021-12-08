@@ -52,19 +52,21 @@ model = PPO.load(PPO_path,env=env) # reloading
 # -> average reward per episode, std of reward -> (200.0, 0.0) '''
 
 # for recording video
-video_recorder = VideoRecorder(env=env, path=os.path.join('Videos','CartPole.mp4'), enabled=True)
-
+video_recorder = VideoRecorder(env=env, path=os.path.join('Videos-Images','CartPole_Random_Agent.mp4'), enabled=True)
+print("hi")
 # evaluating the model without evaluate_policy
-episodes = 1
+episodes = 5
 for episode in range(1, episodes+1):
     observation = env.reset() # current observations(state)
     done = False
     score = 0
 
     while not done:
-        env.render()
-        video_recorder.capture_frame()
-        action, state = model.predict(observation)
+        for i in range(3): # slow down video
+            env.render()
+            video_recorder.capture_frame()
+        # action, state = model.predict(observation) # trained agent
+        action = [env.action_space.sample()] # untrained agent
         observation, reward, done, info = env.step(action) # takes action then returns observation + stuff
         score += reward
     print(f'Episode:{episode} Score: {score}')
