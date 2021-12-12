@@ -83,10 +83,10 @@ model = DQN.load(dqn_breakout_path, env)
 #-> avg reward per episode, std deviation -> (5.8, 2.2271057451320084)'''
 
 # for recording video
-video_recorder = VideoRecorder(env=env, path=os.path.join('Videos-Images','Breakout_Random_Agent.mp4'), enabled=True)
+video_recorder = VideoRecorder(env=env, path=os.path.join('Videos-Images','Breakout DQN Deterministic.mp4'), enabled=True)
 
 # evaluating the model without evaluate_policy
-episodes = 2
+episodes = 1
 for episode in range(1, episodes+1):
     observation = env.reset() # current observations(state)
     lives = 5
@@ -99,8 +99,8 @@ for episode in range(1, episodes+1):
             env.render()
             video_recorder.capture_frame()
 
-        # action, state = model.predict(observation) # trained agent
-        action = [env.action_space.sample()] # random agent
+        action, state = model.predict(observation, deterministic=True) # trained agent
+        # action = [env.action_space.sample()] # random agent
         observation, reward, done, info = env.step(action) # takes action then returns observation + stuff
 
         lives -= done # turns out done is 1 if you lose a life and not if it's actually done
